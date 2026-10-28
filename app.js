@@ -862,9 +862,9 @@ async function enviarRegistro(datos) {
     tipoCandado: Array.isArray(datos.tipoCandado) ? datos.tipoCandado.join(", ") : datos.tipoCandado,
     codigoCandado: datos.codigoCandado,
     responsable: datos.responsable,
-    fechaInstalacion: datos.fechaInstalacion,
+    fechaInstalacion: datos.fechaInstalacion + "T12:00:00",
     observaciones: datos.observaciones || "Sin observaciones",
-    fechaRegistro: datos.timestamp || new Date().toISOString(),
+    fechaRegistro: new Date().toLocaleString("sv-SE", { timeZone: "America/Lima" }).replace(" ", "T"),
     fotos: fotosBase64
   };
 
