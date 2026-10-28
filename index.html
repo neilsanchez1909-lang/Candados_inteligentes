@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="description" content="Formulario de registro de instalación de candados inteligentes para operaciones de campo de Luz del Sur.">
+  <title>Registro de instalación de candados inteligentes | Luz del Sur</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <main class="app-container">
+    <!-- ================= ENCABEZADO CORPORATIVO ================= -->
+    <header class="app-header">
+      <div class="header-brand">
+        <!-- Logo de Luz del Sur: compatible con logo_luz_del_sur.png y logo-luz-del-sur.png -->
+        <img 
+          src="assets/logo_luz_del_sur.png" 
+          alt="Luz del Sur" 
+          class="header-logo"
+          id="logoEmpresa"
+          onerror="if (!this.dataset.triedDash) { this.dataset.triedDash = '1'; this.src='assets/logo-luz-del-sur.png'; } else if (!this.dataset.triedSvg) { this.dataset.triedSvg = '1'; this.src='assets/logo-luz-del-sur.svg'; }"
+        >
+      </div>
+      <div>
+        <span class="header-badge"> Control de candados</span>
+        <h1 class="app-title">Registro de instalación de candados inteligentes</h1>
+        <p class="app-subtitle">Módulo técnico para registro y control de subestaciones</p>
+      </div>
+    </header>
+
+    <!-- ================= FORMULARIO PRINCIPAL ================= -->
+    <div class="form-wrapper">
+      <form id="formRegistro" novalidate autocomplete="off">
+
+        <!-- 1. CAMPO: SED (Buscador y opciones juntos en un solo campo) -->
+        <div class="form-group" id="group-sed">
+          <label for="sedInput" class="form-label" id="label-sed">
+            1. SED (Subestación de Distribución) <span class="required" aria-hidden="true">*</span>
+          </label>
+          <p class="field-hint">Escribe directamente para filtrar o selecciona de la lista desplegable.</p>
+
+          <div class="sed-autocomplete-container" id="sedSelectContainer">
+            <div class="sed-input-wrapper">
+              <input 
+                type="text" 
+                id="sedInput" 
+                class="form-control" 
+                placeholder="Escribe el código de SED (ej. 00837, CEPS)..." 
+                autocomplete="off" 
+                spellcheck="false" 
+                required
+              >
+              <button type="button" class="select-clear-btn" id="sedClearBtn" title="Limpiar">&times;</button>
+            </div>
+
+            <!-- Lista única de opciones desplegada directamente debajo -->
+            <ul class="dropdown-options-list" id="sedOptionsList" role="listbox"></ul>
+          </div>
+
+          <input type="hidden" id="sed" name="sed" required>
+          <div class="error-message" id="error-sed" role="alert"></div>
+        </div>
+        <!-- CAMPO: FECHA DE INSTALACIÓN-->
+        <div class="form-group" id="group-fecha">
+          <label for="fechaInstalacion" class="form-label">
+            2. Fecha de instalación <span class="required">*</span>
+          </label>
+          <input type="date" id="fechaInstalacion" name="fechaInstalacion" class="form-control" required>
+          <div class="error-message" id="error-fecha"></div>
+        </div>
+
+
+        <!-- 2. CAMPO: TIPO DE CANDADO (Selección múltiple con casillas / chips) -->
+        <fieldset class="form-group" id="group-tipoCandado" style="border:none; padding:0;">
+          <legend class="form-label">
+            3. Tipo de candado <span class="required" aria-hidden="true">*</span>
+          </legend>
+          <p class="field-hint">Selecciona una o más opciones instaladas en la subestación:</p>
+
+          <div class="lock-types-grid" role="group" aria-label="Tipos de candado instalados">
+            <!-- Opción MULTILOCK -->
+            <label class="lock-chip-label" id="label-multilock">
+              <input 
+                type="checkbox" 
+                name="tipoCandado" 
+                value="MULTILOCK" 
+                class="lock-chip-checkbox"
+                id="tipo-multilock"
+              >
+              <span class="custom-checkbox" aria-hidden="true"></span>
+              <span class="lock-chip-text"> MULTILOCK</span>
+            </label>
+
+            <!-- Opción YARDENI -->
+            <label class="lock-chip-label" id="label-yardeni">
+              <input 
+                type="checkbox" 
+                name="tipoCandado" 
+                value="YARDENI" 
+                class="lock-chip-checkbox"
+                id="tipo-yardeni"
+              >
+              <span class="custom-checkbox" aria-hidden="true"></span>
+              <span class="lock-chip-text"> YARDENI</span>
+            </label>
+
+            <!-- Opción AMAESTRADO -->
+            <label class="lock-chip-label" id="AMAESTRADO">
+              <input 
+                type="checkbox" 
+                name="tipoCandado" 
+                value="AMAESTRADO" 
+                class="lock-chip-checkbox"
+                id="tipo-amaestrado"
+              >
+              <span class="custom-checkbox" aria-hidden="true"></span>
+              <span class="lock-chip-text"> AMAESTRADO</span>
+            </label>
+
+            <!-- Opción ELECTRÓNICO -->
+            <label class="lock-chip-label" id="ELECTRÓNICO">
+              <input 
+                type="checkbox" 
+                name="tipoCandado" 
+                value="ELECTRÓNICO" 
+                class="lock-chip-checkbox"
+                id="tipo-electronico"
+              >
+              <span class="custom-checkbox" aria-hidden="true"></span>
+              <span class="lock-chip-text"> ELECTRÓNICO</span>
+            </label>
+          </div>
+
+          <div class="error-message" id="error-tipoCandado" role="alert"></div>
+        </fieldset>
+
+
+        <!-- 4. CAMPO: CÓDIGO DE CANDADO A INSTALAR (Mayúsculas automáticas y Regex) -->
+        <div class="form-group" id="group-codigoCandado">
+          <label for="codigoCandado" class="form-label">
+            4. Código de candado instalado <span class="required" aria-hidden="true">*</span>
+          </label>
+          <p class="field-hint">Alfanumérico sin espacios, mínimo 9 caracteres (se convertirá a mayúsculas).</p>
+          <div class="input-code-wrapper">
+            <input 
+              type="text" 
+              id="codigoCandado" 
+              name="codigoCandado" 
+              class="form-control" 
+              placeholder="Ejem:L0000xxxx" 
+              autocomplete="off" 
+              autocapitalize="characters" 
+              spellcheck="false" 
+              required
+            >
+          </div>
+          <div class="error-message" id="error-codigoCandado" role="alert"></div>
+        </div>
+
+
+        <!-- 5. CAMPO: OBSERVACIONES (Opcional) -->
+        <div class="form-group" id="group-observaciones">
+          <label for="observaciones" class="form-label">
+            5. Observaciones <span class="optional">(Opcional)</span>
+          </label>
+          <p class="field-hint">Detalles o notas.</p>
+          <textarea 
+            id="observaciones" 
+            name="observaciones" 
+            class="form-control form-textarea" 
+            rows="3" 
+            placeholder="Escribe observaciones adicionales si fuera necesario..."
+          ></textarea>
+        </div>
+
+
+        <!-- 6. CAMPO: RESPONSABLE -->
+        <div class="form-group" id="group-responsable">
+          <label for="responsable" class="form-label">
+            6. Responsable <span class="required" aria-hidden="true">*</span>
+          </label>
+          <p class="field-hint">Nombre y apellido del técnico o contratista que ejecuta la instalación.</p>
+          <input 
+            type="text" 
+            id="responsable" 
+            name="responsable" 
+            class="form-control" 
+            placeholder="Ej. Juan Pérez - Cuadrilla 12" 
+            required
+          >
+          <div class="error-message" id="error-responsable" role="alert"></div>
+        </div>
+
+
+        <!-- 7. CAMPO: FOTOS O EVIDENCIA -->
+        <div class="form-group" id="group-fotos">
+          <label class="form-label">
+            7. Fotos o evidencia <span class="required" aria-hidden="true">*</span>
+          </label>
+          <p class="field-hint">Adjunta fotos del candado instalado y de la aldaba (mínimo 1, máximo 10 fotos).</p>
+
+          <div class="upload-container">
+            <!-- Input de archivo real oculto: en celulares permite cámara directa o galería -->
+            <input 
+              type="file" 
+              id="fotoInput" 
+              name="fotos" 
+              accept="image/*" 
+              multiple 
+              class="visually-hidden"
+              aria-label="Subir fotos o evidencia fotográfica"
+            >
+
+            <!-- Zona de arrastrar y soltar / botón táctil -->
+            <div class="upload-dropzone" id="uploadDropzone" tabindex="0" role="button" aria-label="Área para tomar o arrastrar fotos">
+              <div class="dropzone-content">
+                <span class="dropzone-icon" aria-hidden="true"></span>
+                <button type="button" class="btn-upload-trigger" id="btnUploadTrigger">
+                  Tomar foto / Subir fotos
+                </button>
+                <p class="dropzone-desktop-text">o arrastra y suelta imágenes aquí desde tu equipo</p>
+              </div>
+            </div>
+
+            <!-- Contador de fotos cargadas -->
+            <div class="photo-counter-bar">
+              <span id="photoStatusText">Mínimo 1 foto requerida</span>
+              <span class="counter-badge" id="photoCounterBadge">0 / 10 fotos</span>
+            </div>
+
+            <!-- Mensaje de error / advertencia de fotos -->
+            <div class="error-message" id="error-fotos" role="alert"></div>
+
+            <!-- Contenedor dinámico de miniaturas con botón de eliminación -->
+            <div class="photo-preview-grid" id="photoPreviewGrid" aria-live="polite"></div>
+          </div>
+        </div>
+
+
+        <!-- ================= BOTONES DE ACCIÓN ================= -->
+        <div class="form-actions">
+          <button type="submit" id="btnSubmit" class="btn btn-primary">
+            <span></span> Registrar instalación
+          </button>
+          <button type="button" id="btnReset" class="btn btn-secondary">
+            <span></span> Limpiar formulario
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+
+  <!-- ================= MODAL DE RESUMEN Y ÉXITO ================= -->
+  <div class="modal-backdrop" id="modalExito" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-icon-success">✓</div>
+        <h2 class="modal-title" id="modalTitulo">¡Instalación Registrada!</h2>
+        <p class="modal-subtitle">Guardado en SharePoint exitosamente</p>
+      </div>
+
+      <div class="modal-body">
+        <div class="summary-notice">
+          <span>✅</span>
+          <div>
+            <strong>Registro completado:</strong> La información y evidencias fotográficas fueron transmitidas a tu lista de SharePoint a través de Power Automate.
+          </div>
+        </div>
+
+        <div class="summary-list">
+          <div class="summary-item">
+            <span class="summary-item-label">Subestación (SED)</span>
+            <span class="summary-item-value" id="summarySed">-</span>
+          </div>
+
+          <div class="summary-item">
+            <span class="summary-item-label">Tipo(s) de Candado</span>
+            <span class="summary-item-value" id="summaryTipo">-</span>
+          </div>
+
+          <div class="summary-item">
+            <span class="summary-item-label">Código de Candado</span>
+            <span class="summary-item-value" id="summaryCodigo">-</span>
+          </div>
+
+          <div class="summary-item">
+            <span class="summary-item-label">Responsable</span>
+            <span class="summary-item-value" id="summaryResponsable">-</span>
+          </div>
+
+          <div class="summary-item">
+            <span class="summary-item-label">Observaciones</span>
+            <span class="summary-item-value" id="summaryObservaciones">-</span>
+          </div>
+
+          <div class="summary-item">
+            <span class="summary-item-label">Evidencias Fotográficas</span>
+            <span class="summary-item-value" id="summaryFotosCount">0 fotos</span>
+          </div>
+        </div>
+
+        <!-- Miniaturas en el resumen -->
+        <div class="summary-thumbs-grid" id="summaryThumbsGrid"></div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="btnModalNuevo">
+          Registrar otra instalación
+        </button>
+        <button type="button" class="btn btn-secondary" id="btnModalCerrar">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lógica y catálogo en JavaScript puro -->
+  <script src="app.js"></script>
+</body>
+</html>

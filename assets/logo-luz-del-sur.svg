@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 120" width="520" height="120">
+  <defs>
+    <linearGradient id="ldsGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFDD00" />
+      <stop offset="60%" stop-color="#FFA800" />
+      <stop offset="100%" stop-color="#F37021" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Fondo con degradado corporativo institucional -->
+  <rect width="520" height="120" rx="8" fill="url(#ldsGradient)" />
+  
+  <!-- Símbolo: Círculo Azul Marino -->
+  <g transform="translate(40, 20)">
+    <circle cx="40" cy="40" r="38" fill="#132968" />
+    
+    <!-- Rayos / Barras de energía amarillas -->
+    <!-- Barra superior -->
+    <polygon points="18,22 58,22 64,32 16,32" fill="#FFC800" />
+    <!-- Barra central -->
+    <polygon points="13,36 68,36 71,44 14,44" fill="#FFC800" />
+    <!-- Barra inferior -->
+    <polygon points="18,48 64,48 58,58 16,58" fill="#FFC800" />
+  </g>
+  
+  <!-- Tipografía LUZ DEL SUR -->
+  <g fill="#132968" transform="skewX(-14)">
+    <text x="175" y="75" font-family="'Arial Black', 'Montserrat', 'Segoe UI', Impact, sans-serif" font-size="44" font-weight="900" letter-spacing="1.5">LUZ DEL SUR</text>
+  </g>
+</svg>
